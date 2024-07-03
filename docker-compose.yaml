@@ -1,0 +1,49 @@
+version: '2.1'
+services:
+    db:
+        image: mysql:8.0.32
+        environment:
+            - MYSQL_DATABASE=movieticket
+            - MYSQL_ROOT_PASSWORD=123456
+            - TZ=Asia/Ho_Chi_Minh
+        restart: always
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '-h', '127.0.0.1', '--silent']
+            interval: 3s
+            retries: 5
+        volumes:
+            - db-data:/var/lib/mysql
+        expose:
+            - 3306
+    backend:
+        # image: movieticket-backend
+        build: backend
+        ulimits:
+            nofile:
+                soft: 65536
+                hard: 65536
+        environment:
+            DB_NAME: movieticket
+            DB_USERNAME: root
+            DB_PASSWORD: 123456
+            FRONTEND_URL: http://localhost:3000
+            TZ: Asia/Ho_Chi_Minh
+        restart: always
+        volumes:
+            - ./backend/upload-dir:/app/upload-dir
+        depends_on:
+            db:
+                condition: service_healthy
+        expose:
+            - 8080
+    nginx:
+        image: nginx
+        volumes:
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+            - ./frontend/build:/usr/share/nginx/html
+        ports:
+            - 3000:80
+        depends_on:
+            - backend
+volumes:
+    db-data:

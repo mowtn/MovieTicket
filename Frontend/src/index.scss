@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    @import url('https://fonts.cdnfonts.com/css/proxima-nova-2');
+    @import url('https://fonts.cdnfonts.com/css/metropolis-4');
+    html {
+        font-family: 'Proxima Nova', 'Metropolis', sans-serif;
+        @apply text-black-primary
+    }
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #aaa;
+        border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #999;
+    }
+    input[type="checkbox"], input[type="radio"] {
+        @apply align-middle
+    }
+    hr {
+        @apply mb-3
+    }
+}
+
+@layer components {
+    .loading {
+        @apply bg-slate-200 animate-pulse;
+    }
+    .container-custom {
+        @apply container max-md:max-w-full mx-auto px-3;
+    }
+    .table-custom {
+        @apply w-full table-auto text-left;
+        th, td {
+            @apply p-2
+        }
+        thead {
+            th {
+                @apply bg-gray-secondary
+            }
+            th:first-child {
+                @apply rounded-s-lg
+            }
+            th:last-child {
+                @apply rounded-e-lg
+            }
+        }
+        tbody {
+            tr {
+                @apply hover:bg-zinc-50
+            }
+            tr + tr {
+                @apply border-t
+            }
+        }
+    }
+}
